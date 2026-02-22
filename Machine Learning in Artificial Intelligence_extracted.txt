@@ -1,0 +1,652 @@
+Proceedingsofthe52ndHawaiiInternationalConferenceonSystemSciences|2019
+Machine Learning in Artificial Intelligence:
+Towards a Common Understanding
+Niklas Kühl Marc Goutier Robin Hirt Gerhard Satzger
+Karlsruhe Institute of Karlsruhe Institute of Karlsruhe Institute of Karlsruhe Institute of
+Technology Technology Technology Technology
+kuehl@kit.edu marc.goutier@kit.edu hirt@kit.edu gerhard.satzger@kit.edu
+Abstract machine learning within instantiations of artificial
+intelligence, precisely within intelligent agents. To do
+The application of “machine learning” and “arti- so, we take a machine learning perspective on the
+ficial intelligence” has become popular within the last capabilities of intelligent agents as well as the
+decade. Both terms are frequently used in science and corresponding implementation.
+media, sometimes interchangeably, sometimes with The contribution of our paper is threefold. First, we
+different meanings. In this work, we aim to clarify the expand the theoretical framework of Russel & Norvig
+relationship between these terms and, in particular, to (2015) [11] by further detailing the “thinking” layer of
+specify the contribution of machine learning to any intelligent agent by splitting it into separate
+artificial intelligence. We review relevant literature “learning” and “executing” sublayers. Second, we
+and present a conceptual framework which clarifies show how this differentiation enables us to distinguish
+the role of machine learning to build (artificial) different contributions of machine learning for intelli-
+intelligent agents. Hence, we seek to provide more gent agents. Third, we draw on the implementations of
+terminological clarity and a starting point for (inter- the execution and learning sublayers (“backend”) to
+disciplinary) discussions and future research. define a continuum between human involvement and
+agent autonomy.
+In the remainder of this paper, we first review
+1. Introduction
+relevant literature in the fields of machine learning and
+artificial intelligence. Next, we present and elaborate
+In his US senate hearing in April 2018, Mark
+our conceptual framework which highlights the con-
+Zuckerberg stressed the necessary capabilities of
+tribution of machine learning to artificial intelligence.
+Facebook’s “AI tools (…) to (…) identify hate speech
+On that basis, we derive an agenda for future research
+(…)” or “ (…) terrorist propaganda” [1]. Researchers
+and conclude with a summary, current limitations, as
+would typically describe such tasks of identifying
+well as an outlook.
+specific instances within social media platforms as
+classification tasks within the field of (supervised)
+2. Related work
+machine learning [2]–[4]. However, with rising
+popularity of artificial intelligence (AI) [5], the term
+AI is often used interchangeably with machine As a base for our conceptual work, we first review
+learning–not only by Facebook’s CEO in the example the different notions, concepts, or definitions of
+above or in other interviews [6], but also across machine learning and artificial intelligence within
+various theoretical and application-oriented contribu- extant research. In addition, we elaborate in greater
+tions in recent literature [7]–[9]. Carner (2017) even detail on the theories which we draw upon in our
+states that he still uses AI as a synonym for machine framework.
+learning although knowing this is not correct [10].
+Such ambiguity, though, may lead to multiple 2.1. Terminology
+imprecisions both in research and practice when
+conversing about methods, concepts, and results. Machine learning and artificial intelligence, as
+It seems surprising that despite of the frequent use well as the terms data mining, deep learning and
+of the terms, there is hardly any helpful scientific statistical learning are related, often present in the
+delineation. Thus, this paper aims to shed light on the same context and sometimes used interchangeably.
+relation of the two terms machine learning and While the terms are common in different communities,
+artificial intelligence. We elaborate on the role of their particular usage and meaning varies widely.
+URI:https://hdl.handle.net/10125/59960
+ISBN:978-0-9981331-2-6
+Page5236
+(CCBY-NC-ND4.0)Process Method set Instantiation
+Statistical Learning
+[Origin: Statistics]
+Implementation
+describes
+application Machine Learning applies
+Data Mining Artifical Intelligence
+process of [Origin: Computer Science]
+Deep Learning
+Others
+OtOhtehresrs
+(e.g. Descriptive Statistics)
+Figure 1. General terminology used in this paper
+For instance, in the field of statistics the focus is on or other techniques like descriptive statistics to mimic
+statistical learning, which is defined as a set of me- intelligence in machines.
+thods and algorithms to gain knowledge, predict Figure 1 and the terms defined within this
+outcomes, and make decisions by constructing models paragraph lay the foundation of the remainder of this
+from a data set [12]. From a statistics point of view, work. However, the overall terminology and
+machine learning can be regarded as an implemen- relationships of the concepts is discussed
+tation of statistical learning [13]. controversially [22]. Therefore, the focus of this paper
+Within the field of computer science, machine is to bring more insight to the terminology and more
+learning has the focus of designing efficient precisely, to clarify the role of machine learning within
+algorithms to solve problems with computational AI. To gain a broader understanding for the terms
+resources [14]. While machine learning utilizes machine learning and AI, we examine both in further
+approaches from statistics, it also includes methods detail.
+which are not entirely based on previous work of
+statisticians—resulting in new and well-cited contri- 2.2. Machine learning
+butions to the field [15], [16]. Especially the method
+of deep learning raised increased interest within the Machine learning describes a set of techniques that
+past years [17]. Deep learning models are composed are commonly used to solve a variety of real-world
+of multiple processing layers which are capable of problems with the help of computer systems which can
+learning representations of data with multiple levels of learn to solve a problem instead of being explicitly
+abstraction. Deep learning has drastically improved programmed [23]. In general, we can differentiate
+the capabilities of machine learning, e.g. in speech between unsupervised and supervised machine
+[18] or image recognition [19]. learning. For the course of this work, we focus on the
+In demarcation to the previous terms, data mining latter, as the most-widely used methods are of
+describes the process on how to apply quantitative supervised nature [24]. With regard to supervised
+analytical methods, which help to solve real-world machine learning, learning means that a series of
+problems, e.g. in business settings [20]. In the case of examples (“past experience”) is used to build
+machine learning, data mining is the process of knowledge about a given task [25]. Although
+generating meaningful machine learning models. The statistical methods are used during the learning
+goal is not to develop further knowledge about process, a manual adjustment or programming of rules
+machine learning algorithms, but to apply them to data or strategies to solve a problem is not required. In more
+in order to gain insights. Machine learning can detail, (supervised) machine learning techniques
+therefore be seen as a foundation for data mining [21]. always aim to build a model by applying an algorithm
+In contrast, artificial intelligence applies on a set of known data points to gain insight on an
+techniques like machine learning, statistical learning unknown set of data [11], [26].
+Page5237Thus, the processes of “creation” of a machine The “Laws of Thought” stream (i.e. thinking
+learning model slightly vary in their definition of rationally) requires an AI to arrive at the rational
+phases but typically employ the three main phases of decision despite what a human might answer.
+model initiation, performance estimation and Table 1. AI research streams based on
+deployment [27]: During the model initiation phase, a Russell & Norvig [11]
+human user defines a problem, prepares and processes
+a data set and chooses a suitable machine learning Objective
+Humanly Rationally
+algorithm for the given task. Then, during the
+performance estimation, various parameter Application
+to
+permutations describing the algorithm are validated
+and a well-performing configuration is selected with
+Cognitive “Laws of
+respect to its performance in solving a specific task. Thinking
+Modeling thought “
+Lastly, the model is deployed and put into practice to
+solve the task on unseen data.
+Learning in general depicts a key facet of a
+human’s cognition which “refers to all processes by
+which the sensory input is transformed, reduced, Acting Turing Test Rational Agent
+elaborated, stored, recovered, and used” [28, p. 4].
+Humans process a vast amount of information by
+utilizing abstract knowledge that helps us to better
+understand incoming input. Due to their adaptive
+Therefore, an AI must follow the laws of thought by
+nature, machine learning models are able to mimic the
+using computational models [37] which reflect logic.
+cognitive abilities of a human being in an isolated
+The “Turing Test” (i.e. acting humanly) stream
+manner.
+implies that an AI must act intelligently when
+However, machine learning solely represents a set
+interacting with humans. To accomplish these tasks,
+of methods that enable to learn patterns in existing
+an AI must perform human tasks at least as good as
+data, thus generating analytical models that can be
+humans [38]. These requirements can be tested by the
+utilized inside larger IT artifacts.
+Turing Test [39].
+Finally, the “Rational Agent” stream considers an
+2.3. Artificial intelligence
+AI as a rational [11] or intelligent [40] agent1. This
+agent does not only act autonomously but also with the
+The topic of artificial intelligence (AI) is rooted in objective to achieve the rationally ideal outcome.
+different research disciplines, such as computer An alternative way to delineate AI is defining
+science [18, 19], philosophy [20, 21], or futures intelligence in general and using the resulting insights
+studies [22, 23]. In this work, we mainly focus on the to create intelligent machines. Legg and Hutter [41]
+field of computer science, as it is the most relevant one
+use intelligence tests, theories of human intelligence
+in identifying the contribution of machine learning to
+and psychological definitions to define a measurement
+AI and in differentiating both terms.
+of intelligence. Based on their definition, they use an
+AI research can be separated into different research
+agent-environment framework to describe intelligence
+streams [11]. These streams differ on the one hand as in general and—in case the agent is a machine—
+to the objective of AI application (thinking vs. acting), artificial intelligence in particular. Their framework
+on the other hand as to the kind of decision making exhibits many similarities to the “acting rationally”
+(targeting a human-like decision vs. an ideal, rational stream.
+decision). This distinction leads to four research Besides defining AI in general, the classification of
+currents which are depicted in Table 1. AI is another topic in the field of AI research. Searle
+According to the “Cognitive Modeling” (i.e. thinking [42] suggests differentiating between weak and strong
+humanly) stream, an AI must be a machine with a
+AI. Whereas a weak AI only pretends to think, a strong
+mind [34]. This also includes performing human
+AI is a mind with mental states. Gubrud [43] however
+thinking [35], not only based on the same output as a
+categorizes AI by taking the type of task into account.
+human when given the same input, but also on the
+An artificial general intelligence (AGI) is an AI which
+same reasoning steps which led to the very conclusion in general, i.e. in any domain, acts at least on the same
+[36]. level as a human brain, however without requiring
+1 In this case, the terms rational and intelligent are
+used interchangeably in related work [11],[23]
+Page5238consciousness. In contrast, a narrow AI is an AI that 3. A framework for understanding the role
+rivals or exceeds the human brain only in specific, of machine learning in artificial
+limited tasks [44].
+intelligence
+In the following, we will look into the “Rational
+Agent” stream in some more detail as it is of
+In order to understand the interplay of machine
+importance when regarding implementation of
+learning and AI, we base our concept on the
+machine learning within AI. We will come back to the
+framework of Russel & Norvig [11]. With their
+other three research streams in section 3 where we
+differentiation between the two objectives of AI
+show that they are compatible with our framework of
+application, acting and thinking, they lay an important
+an agent-based AI.
+foundation.
+According to the “Rational Agent” stream, the
+intelligence itself is manifested by the acting of agents.
+3.1. Layers of agents
+These agents are characterized by five features,
+namely they “operate autonomously, perceive their
+When trying to understand the role of machine
+environment, persist over a prolonged time period,
+learning within AI, we need to take a perspective
+adapt to change, and create and pursue goals” [11, p.
+which has a focus on the implementation of intelligent
+4]. An agent defines its action not for itself but with an
+agents. We require this perspective, as it allows us to
+environment it interacts with. It recognizes the
+map the different tasks and components of machine
+environment by its sensors, has an agent program to
+learning to the capabilities of intelligent agents. If we
+decide what to do with the input data, and performs an
+regard the capabilities of thinking and acting of an
+action with its actuators. To become a rational agent,
+intelligent agent and translate this into the terms of
+the agent must also act to achieve the highest expected
+software design, we can reason that the acting
+outcome according to this performance measure—
+capabilities can be regarded as a frontend, while the
+based on the current and past knowledge of the
+thinking part can be regarded as a backend. Software
+environment and the possible actions.
+engineers typically strictly separate form and function
+When it comes to the general demarcation of
+to allow for more flexibility and independence as well
+agents, according to Russel & Norvig, the agent
+as to enable parallel development [45]. The frontend is
+program can be segmented into four different agent
+the interface the environment interacts with. It can take
+types [11]: A simple reflex agent reacts only based on
+many forms. In the case of intelligent agents it can be
+its sensor data whereas a model-based reflex agent also
+a very abstract, machine-readable web interface [46],
+considers an internal state of the agent. A goal-based
+a human-readable application [47] or even a humanoid
+agent decides for the best decision to achieve its goals.
+template with elaborated expression capabilities [48].
+The fulfilment of a goal is a binary decision which
+For the frontend to interact with the environment, it
+means it can either be fulfilled or not. On the contrast,
+requires two technical components; sensors and
+a utility-based agent has no binary goal but a whole
+actuators. Sensors detect events or changes in the
+utility function which it tries to maximize. An agent
+environment and forward the information via the
+can become a learning agent by extending its program.
+frontend to the backend. For instance, they can read
+Such a learning agent then consists of a performance
+the temperature within an industrial production
+element which selects an action based on the sensor
+machine [49] or read visuals of an interaction with a
+data and a learning element, which gets feedback from
+human [50]. Actuators on the other hand are
+the environment, generates own problems, and
+components that are responsible for moving and
+improves the performance element if possible.
+controlling a mechanism. While sensors just process
+The agent-environment framework consists of
+information, actuators act, for instance by
+three components: an agent, an environment and a
+automatically buying stocks [51] or changing the
+goal. Intelligence is the measurement for the "agent’s
+facial expressions of a humanoid [52]. One could
+ability to achieve goals in a wide range of
+argue that the Turing test [39] takes place at the
+environments” [41, p. 12]. The agent gets input by
+interaction of the environment with the frontend, more
+perceptions generated from the environment. One type
+precisely the combination of sensors and actuators if
+of perceptions are observations of the environment,
+one wants to test the agent’s AI of acting humanly.
+while others are reward signals that indicate how well
+Despite every frontend having sensors and actuators,
+the goals of the agent are achieved. Based on these
+it is not of importance for our work what the precise
+input signals, the agent decides to perform actions
+frontend looks like; it is only relevant to note that a
+which are sent back as signals to the environment.
+backend-independent, encapsulated frontend exists.
+Page5239Figure 2. Conceptual framework
+The backend provides the necessary drift [54] is handled, etc. Therefore, we pick up on the
+functionalities, which depict the thinking capabilities terminology from Russel & Norvig [11] by regarding
+of an intelligent agent. Therefore, the agent needs to two different types of intelligent agents: simple-reflex
+learn and apply learned knowledge. agents as well as learning agents. This differentiation
+In consequence, machine learning is relevant in especially holds for a machine learning perspective on
+this implementation layer. When regarding the case of AI, as it considers whether the underlying models in
+supervised machine learning, we need to further the thinking layer are once trained and never touched
+differentiate between the process task that is building again (simple-reflex)—or continuously updated and
+(=training) adequate machine learning models [21] adaptive (learning). In recent literature, suitable
+and the process task that is executing the deployed examples for both can be found. As an example for
+models [53]. Therefore, to further understand the role simple-reflex agents, Oroszi and Ruhland build and
+of machine learning within intelligent agents, we deploy an early warning system of pneumonia in
+refine the thinking layer of agents into a learning hospitals [55]: While building and testing the model
+sublayer (model building) as well as an executing for the agent shows convincing results, the adaptive
+sublayer (model execution)2. Hence, we regard the learning of the system after deployment might be
+necessary implementation for the learning sublayer as critical. Other examples of agents with single-trained
+the learning backend, while the executing sublayer is models are common in different areas, for instance for
+denoted by the executing backend. anaphora resolutions [56], prediction of pedestrians
+[57] or object annotation [58]. On the other hand,
+3.2. Types of learning recent literature also gives examples for learning
+agents. Mitchell et al. present the concept of “never-
+The learning backend dictates first if the intelligent ending learning” agents [59] which have a strong
+agent is able to learn, and, second, how the agent is focus on continuously building and updating models
+able to learn, e.g., which precise algorithms it uses, within agents. An example for such an agent is shown
+what type of data processing is applied, how concept by Liebman et al., who build a self-learning agent for
+2 Russel & Norvig indicate a related relationship
+by differentiating into learning elements and
+performance elements [11].
+Page5240music playlist recommendations [60]. Other cases are autonomy and no or little human involvement for the
+for instance the regulation of heat pump thermostats delivered task on the other (e.g. [68]–[70]). For
+[61], an agent to acquire collective knowledge over example, an intelligent agent with the task to
+different tasks [62] or learning word meanings [63]. autonomously drive a car considering the traffic signs
+The choice on this feature in general (simple-reflex already proves a high degree of agent autonomy.
+vs. learning agent) influences the overall design of the However, if the agent is confronted with a new traffic
+agent as well as the contribution of machine learning. sign, the learning of this new circumstance might still
+The overview of our resulting framework is depicted need human involvement as the agent might not be
+in figure 2. In conclusion, in the case of a simple-reflex able to “completely learn by itself” [71]. Therefore,
+agent, machine learning takes places as a once-trained the necessary involvement of humans, especially in
+model in the execution sublayer. In contrast, it plays a the thinking layer (= executing backend and learning
+role in the learning sublayer of a learning agent to backend), is of major interest when describing AI and
+continuously improve the model in the execution the underlying machine learning models. The degree
+sublayer. This improvement is based on knowledge of autonomy for each step of machine learning can be
+and feedback, which is derived from the environment investigated and may help to characterize the
+via the execution layer. autonomy of an agent in terms of the related machine
+learning tasks.
+3.3. Continuum between human involvement
+and machine involvement 4. Research priorities for machine-
+learning-enabled artificial intelligence
+When it comes to the executing backend and the
+learning backend, it is not only of importance if and The presented framework of machine learning and
+how underlying machine learning models are its role within intelligent agents is still on a conceptual
+updated—but how much automated the necessary level. However, given the misunderstandings and
+processes are. Every machine learning task involves ambiguity of the two terms [6–9], we see potential for
+various process steps, including data source selection, further research with the aim both to clarify the
+data collection, preprocessing, model building, terminology and to map uncharted territory for
+evaluating, deploying, executing and improving (e.g. machine-learning enabled artificial intelligence.
+[21], [53], [64]). While a discussion of the individual First, empiric validation as well as continuous,
+steps is beyond the scope of this paper, the autonomy iterative development of the framework is necessary.
+and the automation of these tasks as an We need to identify various cases of intelligent agents
+implementation within the agent is of particular across different disciplines and to evaluate how well
+interest in each necessary task of the machine learning the framework fits. It would be interesting to see how
+lifecycle [27]. practical and academic machine-learning-enabled
+artificial intelligence projects map to the framework,
+and, furthermore even quantify which share of such
+projects works with learning agents and which with
+non-learning agents. Additionally, such cases would
+Figure 3. Degree of agent autonomy and help us to gain a better understanding of the necessary
+human involvement human involvement in state-of-the art intelligent
+agents—and, therefore, determine the “degree” of
+For instance, while the execution of a once-built
+autonomy when regarding all aspects (acting,
+model can be fairly easily automated, the automated
+executing, learning) of such agents.
+identification of an adequate data source for a new
+Second, one aspect of interest would be to reduce
+problem or retraining as well as a self-induced model
+the necessary involvement of humans. As stated
+building are more difficult. Therefore, we need to view
+before, we see this spectrum as a continuum between
+the human involvement in the necessary machine
+human involvement and agent autonomy. Two
+learning tasks of an intelligent agent, as depicted in
+possibilities come immediately to mind. The methods
+figure 3. While it is hard to draw a clear line between
+of transfer machine learning deal with possibilities on
+all possible forms of human involvement in the
+how to transfer knowledge (i.e., models) from one
+machine learning-relevant tasks of an intelligent agent,
+source environment to a target environment [72]. This
+we see this phenomenon rather as a continuum. The
+could indeed help to minimize human involvement, as
+continuum ranges between none or little agent
+further research in this field could show possibilities
+autonomy with full human involvement (e.g. [65]–
+and application-oriented techniques to utilize transfer
+[67]) on the one extreme as well as the full agent
+Page5241machine learning for automated adaption of novel or interchangeably but making clear which role machine
+modified tasks [73]. learning plays within a specific agent implementation.
+Additionally, regarding already deployed models
+as part of the backend-layer, it is of interest not only
+how the models are built initially, but how to deal with
+changes in the environment. The so-called subfield of
+concept drift holds many possibilities on how to detect
+changes and adapt models—however, fields of
+successful application remain rare [54], [74].
+5. Conclusion
+In this paper, we clarify the role of machine
+learning within artificial intelligence—in particular
+intelligent agents. We present a framework, which
+highlights the two cases of simple-reflex and learning
+agents as well as the role machine learning can play in
+each of them. In a nutshell, machine learning models
+can be implemented as once-trained models within an
+intelligent agent—without the possibility to learn
+additional insights from the environment (simple
+reflex agent). Implementation-wise, we call this
+sublayer of executing knowledge the executing
+backend. In this case, the agent is able to utilize
+(previously built) machine learning models—but not
+build and update its own ones. If the agent, however,
+is able to learn from its environment and is, therefore,
+able to update the machine learning models within the
+execution sublayer, it is a learning agent. Learning
+agents have an additional sublayer, the learning
+backend, which allows them to utilize machine
+learning in terms of model building/training.
+When it comes to the implementation of these two
+sublayers, it is of importance to capture the degree of
+autonomy that the machine learning within the agent
+requires. This aspect focusses on the human
+involvement in the necessary machine learning tasks,
+e.g. the data collection or the choice of an algorithm.
+The research at hand is still in a conceptual state
+and has certain limitations. First, while the proposed
+framework allows to deepen the understanding of
+machine learning within AI, empirical studies are still
+required to see how well existing machine-learning-
+enabled AI applications fit into this scheme. Expert
+interviews with AI designers could validate the model
+and complete and evaluate the level of detail.
+Furthermore, we need to find ways to quantify the
+human involvement in machine-learning related tasks
+within AI to gain better understanding of the degree of
+autonomy of state-of-the-art agents.
+Although at an early stage, our framework should
+allow scientists and practitioners to be more precise
+when referring to machine learning and AI. It
+highlights the importance of not using the terms
+Page5242References [13] O. Bousquet, U. von Luxburg, and G. Rätsch,
+Advanced Lectures on Machine Learning: ML
+Summer Schools 2003, Canberra, Australia,
+[1] “The Washington Post,” “Transcript of Mark
+February 2-14, 2003, Tübingen, Germany, August
+Zuckerberg’s Senate hearing,” 2018. [Online].
+4-16, 2003, Revised Lectures, vol. 3176. Springer,
+Available:
+2011.
+https://www.washingtonpost.com/news/the-
+switch/wp/2018/04/10/transcript-of-mark- [14] M. Mohri, A. Rostamizadeh, and A. Talwalkar,
+zuckerbergs-senate- Foundations of machine learning. MIT press, 2012.
+hearing/?utm_term=.4720e7f10b41. [Accessed:
+15-Jun-2018]. [15] G.-B. Huang, Q.-Y. Zhu, and C.-K. Siew, “Extreme
+learning machine: a new learning scheme of
+[2] Z. Waseem and D. Hovy, “Hateful Symbols or feedforward neural networks,” in Neural Networks,
+Hateful People? Predictive Features for Hate 2004. Proceedings. 2004 IEEE International Joint
+Speech Detection on Twitter,” in Proceedings of Conference on, 2004, vol. 2, pp. 985–990.
+the NAACL Student Research Workshop, 2016, pp.
+88–93. [16] F. Sebastiani, “Machine learning in automated text
+categorization,” ACM Comput. Surv., vol. 34, no. 1,
+[3] W. Warner and J. Hirschberg, “Detecting hate pp. 1–47, 2002.
+speech on the world wide web,” Proceeding LSM
+’12 Proc. Second Work. Lang. Soc. Media, no. Lsm, [17] Y. A. LeCun, Y. Bengio, and G. E. Hinton, “Deep
+pp. 19–26, 2012. learning,” Nature, 2015.
+[4] H. Chen, W. Chung, J. Qin, E. Reid, M. Sageman, [18] G. Hinton, L. Deng, D. Yu, G. E. Dahl, A.
+Mohamed, N. Jaitly, A. Senior, V. Vanhoucke, P.
+and G. Weimann, “Uncovering the dark web a case
+Nguyen, T. N. Sainath, and B. Kingsbury, “Deep
+study of jihad on the web,” Int. Rev. Res. Open
+Distance Learn., vol. 14, no. 4, pp. 90–103, 2013. Neural Networks for Acoustic Modeling in Speech
+Recognition,” IEEE Signal Process. Mag., 2012.
+[5] H. Fujii and S. Managi, “Trends and priority shifts
+in artificial intelligence technology invention: A [19] K. He, X. Zhang, S. Ren, and J. Sun, “Deep
+global patent analysis,” Econ. Anal. Policy, vol. 58, Residual Learning for Image Recognition,” in 2016
+pp. 60–69, 2018. IEEE Conference on Computer Vision and Pattern
+Recognition (CVPR), 2016.
+[6] “University of Wisconsin,” “Mark Zuckerberg :
+[20] C. Schommer, “An Unified Definition of Data
+How to Build the Future,” Interview Transcript,
+Mining,” CoRR, vol. abs/0809.2696, 2008.
+2016. .
+[7] Information Commissioner’s Office, “Big Data, [21] I. H. Witten, E. Frank, and M. a. Hall, Data Mining:
+artificial intelligence, machine learning and data Practical Machine Learning Tools and Techniques,
+protection,” Data Protection Act and General Data Third Edition, vol. 54, no. 2. 2011.
+Protection Regulation, 2017. [Online]. Available:
+[22] Cross Validated, “What is the difference between
+https://ico.org.uk/media/for-
+data mining, statistics, machine learning and AI?”
+organisations/documents/2013559/big-data-ai-ml-
+2014.
+and-data-protection.pdf. [Accessed: 15-Jun-2018].
+[23] J. R. Koza, F. H. Bennett, D. Andre, and M. A.
+[8] J. A. Brink, “Big Data Management, Access, and Keane, “Automated Design of Both the Topology
+Protection,” Journal of the American College of and Sizing of Analog Electrical Circuits Using
+Radiology, vol. 14, no. 5, pp. 579–580, 2017.
+Genetic Programming,” in Artificial Intelligence in
+[9] T. Nawrocki, P. D. Maldjian, S. E. Slasky, and S. Design ’96, 1996.
+G. Contractor, “Artificial Intelligence and
+[24] M. I. Jordan and T. M. Mitchell, “Machine
+Radiology: Have Rumors of the Radiologist’s
+learning: Trends, perspectives, and prospects,”
+Demise Been Greatly Exaggerated?,” Academic
+Science. 2015.
+Radiology, 2018.
+[25] T. M. Mitchell, Machine Learning, no. 1. 1997.
+[10] C. F. Camerer, “Artificial intelligence and
+behavioral economics,” in Economics of Artificial [26] T. Hastie, R. Tibshirani, and J. Friedman, The
+Intelligence, University of Chicago Press, 2017. elements of statistical learning: data mining,
+inference and prediction, vol. 9. Springer, 2017.
+[11] S. J. Russell and P. Norvig, Artificial Intelligence:
+A Modern Approach, 3rd ed. 2015. [27] R. Hirt, N. Kühl, and G. Satzger, “An end-to-end
+process model for supervised machine learning
+[12] T. Hastie, R. Tibshirani, J. Friedman, and J.
+classification: from problem to deployment in
+Franklin, “The elements of statistical learning: data
+information systems,” in Proceedings of the
+mining, inference and prediction,” Math. Intell.,
+DESRIST 2017 Research-in-Progress, 2017.
+vol. 27, no. 2, pp. 83–85, 2005.
+[28] U. Neisser, Cognitive Psychology. 1967.
+Page5243[29] N. J. Nilsson, Artificial Intelligence: A New [44] R. Kurzweil, “The Singularity Is Near: When
+Synthesis, vol. 125, no. 1–2. 1998. Humans Transcend Biology,” Book, vol. 2011. p.
+652, 2005.
+[30] K. Segerberg, J.-J. Meyer, and M. Kracht, “The
+Logic of Action,” The Stanford Encyclopedia of [45] Laureate Online Education, “Model View
+Philosophy, 2016. [Online]. Available: Controller Design Pattern,” Online, vol. 3, pp.
+https://plato.stanford.edu/archives/win2016/entries 2000–2007, 2007.
+/logic-action/. [Accessed: 15-Jun-2018].
+[46] N. Kühl, M. Mühlthaler, and M. Goutier,
+[31] R. Thomason, “Logic and Artificial Intelligence,” “Automatically Quantifying Customer Need
+The Stanford Encyclopedia of Philosophy, 2016. Tweets : Towards a Supervised Machine Learning
+[Online]. Available: Approach BT - Hawaii International Conference
+https://plato.stanford.edu/archives/win2016/entries on System Sciences (HICSS-51), Waikoloa
+/logic-ai/. [Accessed: 15-Jun-2018]. Village, Hawaii, United States, 3rd - 6th January
+2018,” 2018.
+[32] Committee on Technology National Science and
+Technology Council and Penny Hill Press, [47] C.-W. You, M. Montes-de-Oca, T. J. Bao, N. D.
+“Preparing for the future of Artificial Intelligence,” Lane, H. Lu, G. Cardone, L. Torresani, and A. T.
+Committee on Technology National Science and Campbell, “CarSafe: a driver safety app that detects
+Technology Council and Penny Hill Press, vol. 58. dangerous driving behavior using dual-cameras on
+CreateSpace Independent Publishing Platform, smartphones,” Proc. 2012 ACM Conf. Ubiquitous
+2016. Comput. - UbiComp ’12, pp. 671–672, 2012.
+[33] P. Stone, R. Brooks, E. Brynjolfsson, R. Calo, O. [48] E. Guizzo, “How Aldebaran Robotics Built Its
+Etzioni, G. Hager, J. Hirschberg, S. Friendly Humanoid Robot, Pepper,” “IEEE
+Kalyanakrishnan, E. Kamar, S. Kraus, K. Leyton- Spectrum,” 2014. [Online]. Available:
+Brown, D. Parkes, W. Press, A. Saxenian, J. Shah, https://spectrum.ieee.org/robotics/home-
+M. Tambe, and A. Teller, “Artificial Intelligence robots/how-aldebaran-robotics-built-its-friendly-
+and Life in 2030,” One Hundred Year Study Artif. humanoid-robot-pepper. [Accessed: 15-Jun-2018].
+Intell. Rep. 2015-2016 Study Panel, p. 52, 2016.
+[49] K. Woo, S. Meninger, T. Xanthopoulos, E. Crain,
+[34] J. Haugeland, Artificial Intelligence: The Very Idea. D. Ha, and D. Ham, “Dual-DLL-based CMOS all-
+MIT Press, 1989. digital temperature sensor for microprocessor
+thermal monitoring,” in Digest of Technical Papers
+[35] R. Bellman, An Introduction to Artificial
+- IEEE International Solid-State Circuits
+Intelligence: Can Computers Think? Boyd &
+Conference, 2009.
+Fraser, 1978.
+[50] T. Geller, “How do you feel? Your computer
+[36] A. Newell and H. A. Simon, “GPS, a program that
+knows,” Commun. ACM, vol. 6, no. 8, pp. 24–26,
+simulates human thought,” 1961.
+2014.
+[37] D. McDermott and E. Charniak, “Introduction to
+[51] L. A. Teixeira and A. L. I. De Oliveira, “A method
+artificial intelligence,” Int. J. Adapt. Control Signal
+for automatic stock trading combining technical
+Process., vol. 2, no. 2, pp. 148–149, 1985.
+analysis and nearest neighbor classification,”
+[38] E. Rich and K. Knight, “Artificial intelligence,” Expert Syst. Appl., vol. 37, no. 10, pp. 6885–6890,
+McGraw-Hill, New, 1991. 2010.
+[39] A. M. Turing, “Computing Machine and [52] K. Berns and J. Hirth, “Control of facial
+Intelligence,” MIND, vol. LIX, no. 236, pp. 433– expressions of the humanoid robot head ROMAN,”
+460, 1950. in IEEE International Conference on Intelligent
+Robots and Systems, 2006, pp. 3119–3124.
+[40] D. L. Poole, A. Mackworth, and R. G. Goebel,
+“Computational Intelligence and Knowledge,” [53] P. Chapman, J. Clinton, R. Kerber, T. Khabaza, T.
+Comput. Intell. A Log. Approach, no. Ci, pp. 1–22, Reinartz, C. Shearer, and R. Wirth, “Crisp-Dm
+1998. 1.0,” Cris. Consort., p. 76, 2000.
+[41] S. Legg and M. Hutter, “Universal intelligence: A [54] J. Gama, I. Žliobaitė, A. Bifet, M. Pechenizkiy, and
+definition of machine intelligence,” Minds Mach., A. Bouchachia, “A survey on concept drift
+vol. 17, no. 4, pp. 391–444, 2007. adaptation,” ACM Comput. Surv., vol. 46, no. 4, pp.
+1–37, 2014.
+[42] J. R. Searle, “Minds , Brains , and Programs,” vol.
+3, pp. 1–19, 1980. [55] F. Oroszi and J. Ruhland, “An early warning system
+for hospital acquired,” in 18th European
+[43] M. A. Gubrud, “Nanotechnology and international Conference on Information Systems (ECIS), 2010.
+security,” Fifth Foresight Conference on Molecular
+Nanotechnology, vol. 1. 1997. [56] X. Yang, J. Su, and C. L. Tan, “A twin-candidate
+Page5244model for learning-based anaphora resolution,” [67] A. Holzinger, “Interactive machine learning for
+Comput. Linguist., vol. 34, no. 3, pp. 327–356, health informatics: when do we need the human-in-
+2008. the-loop?,” Brain Informatics, vol. 3, no. 2, pp.
+119–131, 2016.
+[57] Z. Zheng, L. Zheng, and Y. Yang, “Pedestrian
+alignment network for large-scale person re- [68] T. Hata, M. Suganuma, and T. Nagao, “Controlling
+identification,” arXiv Prepr. arXiv1707.00408, an Autonomous Agent for Exploring Unknown
+2017. Environments Using Switching Prelearned
+Modules,” Electron. Commun. Japan, vol. 101, no.
+[58] A. M. Jorge, J. P. Leal, S. S. Anand, and H. Dias,
+5, pp. 84–93, 2018.
+“A study of machine learning methods for detecting
+user interest during web sessions,” in Proceedings [69] A. Rosenfeld, N. Agmon, O. Maksimov, and S.
+of the 18th International Database Engineering & Kraus, “Intelligent agent supporting human–multi-
+Applications Symposium on - IDEAS ’14, 2014, pp. robot team collaboration,” Artif. Intell., vol. 252,
+149–157. pp. 211–231, 2017.
+[59] T. M. Mitchell, W. Cohen, E. Hruschka, P. [70] H. O. Al-sakran, “Intelligent Traffic Information
+Talukdar, J. Betteridge, A. Carlson, B. D. Mishra, System Based on Integration of Internet of Things
+M. Gardner, B. Kisiel, J. Krishnamurthy, N. Lao, and Agent Technology,” Int. J. Adv. Comput. Sci.
+K. Mazaitis, T. Mohamed, N. Nakashole, E. A. Apl., vol. 6, no. 2, pp. 37–43, 2015.
+Platanios, A. Ritter, M. Samadi, B. Settles, R.
+[71] A. Gudigar, S. Chokkadi, and R. U, “A review on
+Wang, D. Wijaya, A. Gupta, X. Chen, A. Saparov,
+automatic detection and recognition of traffic sign,”
+M. Greaves, and J. Welling, “Never-Ending
+Multimed. Tools Appl., vol. 75, no. 1, pp. 333–364,
+Learning,” AAAI Conf. Artif. Intell., pp. 2302–
+2016.
+2310, 2015.
+[72] J. Lu, V. Behbood, P. Hao, H. Zuo, S. Xue, and G.
+[60] E. Liebman, M. Saar-Tsechansky, and P. Stone,
+Zhang, “Transfer learning using computational
+“Dj-mc: A reinforcement-learning agent for music
+intelligence: A survey,” Knowledge-Based Syst.,
+playlist recommendation,” in Proceedings of the
+vol. 80, pp. 14–23, 2015.
+2015 International Conference on Autonomous
+Agents and Multiagent Systems, 2015, pp. 591–599. [73] K. Weiss, T. M. Khoshgoftaar, and D. D. Wang, “A
+survey of transfer learning,” J. Big Data, vol. 3, no.
+[61] F. Ruelens, S. Iacovella, B. J. Claessens, and R.
+1, 2016.
+Belmans, “Learning agent for a heat-pump
+thermostat with a set-back strategy using model- [74] L. Baier, N. Kühl, and G. Satzger, “How to Cope
+free reinforcement learning,” Energies, vol. 8, no. with Change? Preserving Validity of Predictive
+8, pp. 8300–8318, 2015. Services over Time,” in Hawaii International
+Conference on System Sciences (HICSS-52), 2019.
+[62] M. Rostami, S. Kolouri, K. Kim, and E. Eaton,
+“Multi-Agent Distributed Lifelong Learning for
+Collective Knowledge Acquisition,” arXiv Prepr.
+arXiv1709.05412, 2017.
+[63] Y. Yu, A. Eshghi, and O. Lemon, “VOILA : An
+Optimised Dialogue System for Interactively
+Learning Visually-Grounded Word Meanings
+(Demonstration System),” in Proceedings of the
+SIGDIAL 2017 Conference, 2017, pp. 197–200.
+[64] U. Fayyad, G. Piatetsky-Shapiro, and P. Smyth,
+“The KDD process for extracting useful knowledge
+from volumes of data,” Commun. ACM, vol. 39, no.
+11, pp. 27–34, 1996.
+[65] Y. Nagar and T. W. Malone, “Making business
+predictions by combining human and machine
+intelligence in prediction markets,” Int. Conf. Inf.
+Syst. ICIS 2011, pp. 1–16, 2011.
+[66] O. Russakovsky, L. J. Li, and L. Fei-Fei, “Best of
+both worlds: Human-machine collaboration for
+object annotation,” in Proceedings of the IEEE
+Computer Society Conference on Computer Vision
+and Pattern Recognition, 2015, vol. 07–12–June,
+pp. 2121–2131.
+Page5245
